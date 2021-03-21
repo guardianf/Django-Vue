@@ -1,0 +1,22 @@
+{% extends 'global.html' %}
+
+{% block body%}
+<div id="dp">
+  <input type="text" name="" v-model='ua'/>
+  <button type="button" name="button" @click='add'>add</button>
+</div>
+<script defer type="module">
+  window.dp = new Vue({
+    el: '#dp',
+    data: {
+      ua: 1
+    },
+    methods: {
+      add() {
+        console.log('add')
+        this.ua += 1;
+      }
+    }
+  })
+</script>
+{% endblock %}

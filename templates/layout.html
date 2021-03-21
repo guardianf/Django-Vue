@@ -1,0 +1,153 @@
+{% extends 'global.html' %}
+
+{% load i18n %}
+{% load static %}
+{% block inline_styles %}
+  <style type="text/css">
+    #left {
+      width: 200px;
+      position: absolute;
+      float: left;
+    }
+
+    #right {
+      position: relative;
+    }
+
+  </style>
+  {% block page_styles %}{% endblock %}
+{% endblock %}
+
+
+{% block banner %}
+  <fvr-banner id='home'>
+    <fvr-avatar :src='userInfo.avatar'></fvr-avatar>
+    <fvr-font style='margin: 0 10px;'>[[ userInfo.name ]]</fvr-font>
+    <fvr-dropdown :lists="lists" @command='dropdownClick'></fvr-dropdown>
+  </fvr-banner>
+{% endblock %}
+
+{% block body %}
+<fvr-container>
+  <fvr-aside style='width: 335px;' id='nav'>
+    {% block slide_menu %}
+    <fvr-menu @choose='asd'>
+      <fvr-menu-item index='1' icon="el-icon-location" route="{% url 'home' %}">Dashboard</fvr-menu-item>
+      <fvr-submenu index='2' icon='el-icon-location' label='Robot Service'>
+        <fvr-menu-item-group label='Robot Service'>
+          <fvr-menu-item index='2-1'>Robot</fvr-menu-item>
+          <fvr-menu-item index='2-2' route="{% url 'arm' %}">Arm</fvr-menu-item>
+          <fvr-menu-item index='2-3' route="{% url 'box' %}">Robot ControlBox</fvr-menu-item>
+          <fvr-menu-item index='2-4' route="{% url 'teaches' %}">AI ControlBox</fvr-menu-item>
+          <fvr-menu-item index='2-5'>Teach</fvr-menu-item>
+          <fvr-menu-item index='2-6'>Motion Bar</fvr-menu-item>
+          <fvr-menu-item index='2-7'>Joint</fvr-menu-item>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <fvr-submenu index='3' icon='el-icon-location' label='Software Service'>
+        <fvr-menu-item-group label='Software Service'>
+          <fvr-menu-item index='3-1'>License</fvr-menu-item>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <fvr-submenu index='4' icon='el-icon-location' label='Order Service'>
+        <fvr-menu-item-group label='Order Service'>
+          <fvr-menu-item index='3-1'>Product</fvr-menu-item>
+          <fvr-menu-item index='3-1'>Order</fvr-menu-item>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <fvr-submenu index='5' icon='el-icon-location' label='SI Service'>
+        <fvr-menu-item-group label='SI Service'>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <fvr-submenu index='6' icon='el-icon-location' label='Download Service'>
+        <fvr-menu-item-group label='Download Service'>
+          <fvr-menu-item index="6-1">Ethernet Interface</fvr-menu-item>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <fvr-submenu index='7' icon='el-icon-location' label='Management Service'>
+        <fvr-menu-item-group label='Management Service'>
+          <fvr-menu-item index="7-1">User</fvr-menu-item>
+          <fvr-menu-item index="7-2">Role</fvr-menu-item>
+          <fvr-menu-item index="7-3">Menu</fvr-menu-item>
+          <fvr-menu-item index="7-4">Group</fvr-menu-item>
+          <fvr-menu-item index="7-5">Download</fvr-menu-item>
+        </fvr-menu-item-group>
+      </fvr-submenu>
+      <div style='flex: 1'></div>
+      <fvr-menu-item index='' icon='el-icon-location' topline>Collapse sidebar</fvr-menu-item>
+    </fvr-menu>
+    {% endblock %}
+  </fvr-aside>
+
+  <fvr-main id="right">
+    <div id="content">
+      {% block breadcrumbs %}
+        <div class="breadcrumbs"></div>
+      {% endblock %}
+
+      {% block content %}
+      {% endblock %}
+      <br class="clear">
+    </div>
+  </fvr-main>
+</fvr-container>
+{% endblock %}
+
+{% block scripts %}
+<script type="module">
+  extend({
+    created() {
+      console.log('nav inited')
+    },
+    methods: {
+      asd(val) {
+        console.log('run asd', val)
+      }
+    }
+  })
+  extend({
+    delimiters: ["[[", "]]"],
+    data() {
+      return {
+        userInfo: {
+          avatar: "",
+          name: "yubin"
+        },
+        lists: [{
+          name: "My Account",
+          command: ""
+        }, {
+          name: "Change Password",
+          command: "password_reset"
+        }, {
+          name: "Log out",
+          command: "logout"
+        }]
+      }
+    },
+    methods: {
+      dropdownClick(action) {
+        switch(action) {
+          case 'password_reset':
+            this.jumpToReset();
+            break;
+          case 'logout':
+            this.jumpToLogout();
+            break;
+        }
+      },
+      jumpToReset() {
+      },
+      jumpToLogout() {
+        const cookie = new Cookie();
+        cookie.setCookie('rememberMe', '')
+        navigateTo("{% url 'logout' %}")
+      },
+    },
+    created() {
+      console.log('banner inited');
+    }
+  })
+</script>
+{% block sub_scripts %}{% endblock %}
+{% endblock %}
