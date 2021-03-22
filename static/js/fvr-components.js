@@ -415,6 +415,42 @@ export const fvrMenuItem = {
   },
 };
 
+/**
+ * define table component
+ * @type {Object}
+ */
+export const fvrTable = {
+  template: `<el-table :data="newData">
+    <template>
+      <fvr-table-column v-if="columns.length > 0" v-for="column in columns" :label="column.label" :prop="column.prop"></fvr-table-column>
+      <slot v-else />
+    </template>
+    </el-table>`,
+  props: ["data", "columns", ],
+  computed: {
+    newData() {
+      return this.data
+    },
+  },
+}
+
+export const fvrTableColumn = {
+  template: `<el-table-column :prop="newProp" :label="newLabel">
+      <slot />
+    </el-table-column>`,
+  props: ["prop", "label", ],
+  data() {
+    return {
+      newProp: this.prop,
+      newLabel: this.label,
+    }
+  },
+}
+
+/**
+ * allow to install components by Vue.use
+ * @type {Object}
+ */
 const Components = {
   // fvrContainer, fvrBanner, fvrFont, fvrUserNameInput, fvrPasswordInput, fvrCaptcha,
   // fvrCheckbox, fvrRow, fvrAvatar, fvrDropdown, fvrAside, fvrMain, fvrMenu, fvrSubmenu,
@@ -436,6 +472,8 @@ const Components = {
     Vue.component('fvr-submenu', fvrSubmenu);
     Vue.component('fvr-menu-item-group', fvrMenuItemGroup);
     Vue.component('fvr-menu-item', fvrMenuItem);
+    Vue.component('fvr-table', fvrTable);
+    Vue.component('fvr-table-column', fvrTableColumn);
   },
 };
 export default Components;

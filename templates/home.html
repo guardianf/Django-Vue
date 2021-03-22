@@ -13,14 +13,39 @@
 {% endblock %}
 
 {% block content %}
-  <form class="form-group col-lg-4 col-lg-push-3">
-    <h1 class="h1">Hello Cloud</h1>
+  <form>
+    <fvr-table :data="dataList" :columns="dataColumn"></fvr-table>
   </form>
 {% endblock %}
 
 {% block sub_scripts %}
 <script>
   extend({
+    data() {
+      return {
+        dataList: Array.apply(null, {length: 10}).map((data, index) => {
+          return {
+            id: index + 1,
+            name: "姓名-" + (index + 1),
+            age: "年龄-" + (index + 1),
+            addr: "地址-" + (index + 1),
+          }
+        }),
+        dataColumn: [{
+          label: "No.",
+          prop: "id",
+        }, {
+          label: "Name",
+          prop: "name",
+        }, {
+          label: "Age",
+          prop: "age",
+        }, {
+          label: "Addr",
+          prop: "addr",
+        }, ],
+      }
+    }
   })
 </script>
 {% endblock %}
