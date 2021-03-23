@@ -96,13 +96,9 @@
 {% block scripts %}
 <script type="module">
   extend({
-    created() {
-      console.log('nav inited')
-    },
     methods: {
       asd(val) {
-        console.log('run asd', val)
-      }
+      },
     }
   })
   extend({
@@ -144,9 +140,6 @@
         navigateTo("{% url 'logout' %}")
       },
     },
-    created() {
-      console.log('banner inited');
-    }
   })
 </script>
 {% block sub_scripts %}{% endblock %}

@@ -13,9 +13,32 @@
 {% endblock %}
 
 {% block content %}
-  <form>
-    <fvr-table :data="dataList" :columns="dataColumn"></fvr-table>
-  </form>
+  <fvr-dialog :visible="showDialog" :data="arm">
+    <template slot="title"><fvr-font>[[ (isEdit ? "Edit" : "Add") + " Arm" ]]</fvr-font></template>
+    <template v-slot:default="slotProps">
+      <div>id: [[ slotProps.id ]]</div>
+      <div>name: [[ slotProps.name ]]</div>
+      <div>age: [[ slotProps.age ]]</div>
+    </template>
+    <div slot="footer" @click="showDialog = false;">
+      btns
+    </div>
+  </fvr-dialog>
+
+  <div>
+    <fvr-button @click.native="newArm">Add</fvr-button>
+    <fvr-table :data="dataList">
+      <fvr-table-column prop="id" label="No."></fvr-table-column>
+      <fvr-table-column prop="name" label="Name"></fvr-table-column>
+      <fvr-table-column prop="age" label="Age"></fvr-table-column>
+      <fvr-table-column prop="addr" label="Addr"></fvr-table-column>
+      <fvr-table-column label="Action">
+        <template slot-scope="scope">
+          <i class="el-icon-edit" @click="handler(scope.$index, scope.row)"></i>
+        </template>
+      </fvr-table-column>
+    </fvr-table>
+  </div>
 {% endblock %}
 
 {% block sub_scripts %}
@@ -31,21 +54,25 @@
             addr: "地址-" + (index + 1),
           }
         }),
-        dataColumn: [{
-          label: "No.",
-          prop: "id",
-        }, {
-          label: "Name",
-          prop: "name",
-        }, {
-          label: "Age",
-          prop: "age",
-        }, {
-          label: "Addr",
-          prop: "addr",
-        }, ],
+        isEdit: false,
+        showDialog: false,
+        arm: {},
       }
-    }
+    },
+    methods: {
+      handler(index, data) {
+        this.isEdit = true;
+        this.openDialog(data);
+      },
+      openDialog(arm) {
+        this.showDialog = true;
+        this.arm = arm;
+      },
+      newArm() {
+        this.isEdit = false;
+        this.openDialog({});
+      },
+    },
   })
 </script>
 {% endblock %}
