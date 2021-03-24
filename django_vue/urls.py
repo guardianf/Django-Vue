@@ -24,6 +24,7 @@ urlpatterns = [
     path('global/', views.parent, name='global'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+    path('index/', views.index, name='index'),
     path('home/', views.ListView.as_view(), name='home', kwargs={"name": "test"}),
     path('robot/list_arm/', views.ListView.as_view(), name='arm'),
     path('robot/list_box', views.ListView.as_view(), name='box'),

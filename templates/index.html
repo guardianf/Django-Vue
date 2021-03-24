@@ -1,5 +1,26 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h1>去你的 {{ hello }}</h1>
+  <slot1 v-model="data">
+    <h1 slot="title">去你的[[ data.id ]]</h1>
+    <template v-slot="slotProps">
+      <h2>h2:[[ slotProps.id ]]</h2>
+    </template>
+  </slot1>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="module">
+  extend({
+    delimiters: ["[[", "]]"],
+    data() {
+      return {
+        data: {
+          id: 1,
+        },
+      }
+    },
+  })
+</script>
 {% endblock %}

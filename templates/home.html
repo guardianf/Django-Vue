@@ -13,16 +13,16 @@
 {% endblock %}
 
 {% block content %}
-  <fvr-dialog :visible="showDialog" :data="arm">
+  <fvr-dialog :visible="showDialog" :data="arm" @change-visible="changeVisible">
     <template slot="title"><fvr-font>[[ (isEdit ? "Edit" : "Add") + " Arm" ]]</fvr-font></template>
     <template v-slot:default="slotProps">
       <div>id: [[ slotProps.id ]]</div>
       <div>name: [[ slotProps.name ]]</div>
       <div>age: [[ slotProps.age ]]</div>
     </template>
-    <div slot="footer" @click="showDialog = false;">
+    <template slot="footer" @click="showDialog = false;">
       btns
-    </div>
+    </template>
   </fvr-dialog>
 
   <div>
@@ -71,6 +71,9 @@
       newArm() {
         this.isEdit = false;
         this.openDialog({});
+      },
+      changeVisible(ret) {
+        this.showDialog = ret;
       },
     },
   })

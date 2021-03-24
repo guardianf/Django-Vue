@@ -630,15 +630,26 @@ export const fvrPagination = {
  * define dialog component
  */
 export const fvrDialog = {
-    template: `<el-dialog :visible="newVisible" :before-close="handlerClose" close-on-click-modal class="fvr-dialog" :width="newWidth">
-        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="slotProps">
-            <slot :name="name" v-bind="newData"></slot>
-        </template>
-        <template v-for="(index, name) in $slots" :slot="name">
-            <slot :name="name"></slot>
-        </template>
-    </el-dialog>`,
+    // template: `<el-dialog :visible="newVisible" :before-close="handlerClose" close-on-click-modal class="fvr-dialog" :width="newWidth">
+    //     <template v-for="(index, name) in $scopedSlots" v-slot:[name]="slotProps">
+    //         <slot :name="name" v-bind="newData"></slot>
+    //     </template>
+    //     <template v-for="(index, name) in $slots" :slot="name">
+    //         <slot :name="name"></slot>
+    //     </template>
+    // </el-dialog>`,
     props: ["visible", "title", "width", "data", ],
+    render(h) {
+      const self = this;
+      return h("el-dialog", {
+        props: {
+          visible: self.newVisible,
+        },
+        scopedSlots: {
+          default: props => h('div', props.text),
+        },
+      }, );
+    },
     data() {
         return {
             newTitle: this.title,
@@ -659,11 +670,33 @@ export const fvrDialog = {
         }
     },
     mounted() {
-      for (var name in this.$scopedSlots) {
-        console.log(this.$scopedSlots[name](), name)
-      }
+      // for (var name in this.$scopedSlots) {
+      //   console.log(this.$scopedSlots[name](), name)
+      // }
+      console.log(this.$scopedSlots.default(props => {
+        console.log(props.text);
+      }));
     },
 }
+
+export const slot1 = {
+  // template: `<div>
+  //   <div>你好: {{ user.id }}</div>
+  //   <slot name="title"></slot>
+  //   <slot v-bind="user"></slot>
+  // </div>`,
+  props: ["value", ],
+  render(h) {
+    const self = this;
+    return h('div', {
+    }, [
+      h('div', `你好${self.value.id}`),
+      this.$slots.title,
+      this.$scopedSlots.default(self.value),
+    ])
+  },
+}
+
 
 /**
  * as a plugin to install all the fvr-components
@@ -698,6 +731,7 @@ const Components = {
     Vue.component("fvr-table-column", fvrTableColumn);
     Vue.component("fvr-pagination", fvrPagination);
     Vue.component("fvr-dialog", fvrDialog);
+    Vue.component("slot1", slot1);
   },
 };
 export default Components;
