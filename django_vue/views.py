@@ -23,7 +23,9 @@ def logout(request):
 def test(request):
     return render(request, 'test.html')
 
+def index(request):
+    return render(request, 'index.html')
+
 class ListView(View):
     def get(self, request, *args, **kwargs):
-        print(args)
         return render(request, "home.html")

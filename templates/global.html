@@ -16,6 +16,8 @@
     #app {
       width: 100%;
       height: 100%;
+      margin: 0;
+      padding: 0;
     }
 
     #footer {
@@ -31,7 +33,7 @@
   <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
   <script src="{% static 'js/elementui.js' %}"></script>
   <script type="module" src="{% static 'js/fvr-components.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/flexiv.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
 
   <script type="module">
     import FvrComponent from "{% static 'js/fvr-components.js' %}"
@@ -49,7 +51,7 @@
 
 <body>
   {% csrf_token %}
-  <div class="wrapper" id='app'>
+  <div class="wrapper" id="app" style="display: none;">
     <fvr-container style='flex-flow: column;'>
       {% block banner %}
       {% endblock %}
@@ -59,16 +61,17 @@
       {% block footer %}
       {% endblock %}
     </fvr-container>
+    <div id="message"></div>
   </div>
   {% block scripts %}
   {% endblock %}
   <script type="module">
-    const app = new Vue({
+    window.app = new Vue({
       mixins: [...mixins],
-      created() {
-        console.log('app inited');
-      }
-    }).$mount('#app');
+      mounted() {
+        this.$root.$el.style.display="";
+      },
+    }).$mount("#app");
   </script>
 </body>
 </html>

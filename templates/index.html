@@ -1,5 +1,56 @@
 {% extends "layout.html" %}
 
+{% block inline_styles %}
+<style>
+  #message {
+    position: absolute;
+    top: 50%;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-  <h1>去你的 {{ hello }}</h1>
+  <slot1 v-model="data">
+    <h1 slot="title">去你的[[ data.id ]]</h1>
+    <template v-slot="slotProps">
+      <h2 @click="showMessage">h2:[[ slotProps.id ]]</h2>
+    </template>
+  </slot1>
+   <input v-model="test_input">
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="module">
+  extend({
+    delimiters: ["[[", "]]"],
+    data() {
+      return {
+        data: {
+          id: 1,
+        },
+        test_input: {a:1},
+      }
+    },
+    methods: {
+      showMessage() {
+        const Profile = Vue.extend({
+          template: `<div id="message" @click="close">这是一个message,内容: {{ message }}</div>`,
+          data() {
+            return {
+              message: 'this is a message ',
+            }
+          },
+          methods: {
+            close() {
+              this.$destroy();
+              console.log(this)
+            }
+          },
+        });
+        window.instance = new Profile().$mount('#message');
+      }
+    },
+  })
+</script>
 {% endblock %}

@@ -13,14 +13,107 @@
 {% endblock %}
 
 {% block content %}
-  <form class="form-group col-lg-4 col-lg-push-3">
-    <h1 class="h1">Hello Cloud</h1>
-  </form>
+  <fvr-dialog :visible="showDialog" :data="arm" @change-visible="changeVisible">
+    <template slot="title"><fvr-font>[[ (isEdit ? "Edit" : "Add") + " Arm" ]]</fvr-font></template>
+    <template v-slot:default="slotProps">
+      <div>id: [[ slotProps.id ]]</div>
+      <div>name: [[ slotProps.name ]]</div>
+      <div>age: [[ slotProps.age ]]</div>
+    </template>
+    <template slot="footer" @click="showDialog = false;">
+      btns
+    </template>
+  </fvr-dialog>
+
+  <div>
+    <fvr-button @click.native="newArm">Add</fvr-button>
+    <!-- <fvr-table :data="dataList">
+      <fvr-table-column prop="id" label="No."></fvr-table-column>
+      <fvr-table-column prop="name" label="Name"></fvr-table-column>
+      <fvr-table-column prop="age" label="Age"></fvr-table-column>
+      <fvr-table-column prop="addr" label="Addr"></fvr-table-column>
+      <fvr-table-column label="Action">
+        <template slot-scope="scope">
+          <i class="el-icon-edit" @click="handler(scope.$index, scope.row)"></i>
+        </template>
+      </fvr-table-column>
+    </fvr-table> -->
+    <fvr-table-page
+      :list="getList"
+      :columns="columns"
+    ></fvr-table-page>
+  </div>
 {% endblock %}
 
 {% block sub_scripts %}
 <script>
   extend({
+    data() {
+      return {
+        dataList: Array.apply(null, {length: 10}).map((data, index) => {
+          return {
+            id: index + 1,
+            name: "姓名-" + (index + 1),
+            age: "年龄-" + (index + 1),
+            addr: "地址-" + (index + 1),
+          }
+        }),
+        isEdit: false,
+        showDialog: false,
+        arm: {},
+        columns: [{
+          label: "name",
+          prop: "name",
+        }, {
+          label: "sex",
+          prop: "sex",
+        }, {
+          label: "phone",
+          prop: "phone",
+        }, {
+          label: "Action",
+          btns: [{
+            label: "edit",
+            handleClick(index, item) {
+              console.log(index, item)
+            }
+          }, {
+            label: "view",
+            handleClick(index, item) {
+              console.log(index, item)
+            }
+          }]
+        }],
+      }
+    },
+    methods: {
+      handler(index, data) {
+        this.isEdit = true;
+        this.openDialog(data);
+      },
+      openDialog(arm) {
+        this.showDialog = true;
+        this.arm = arm;
+      },
+      newArm() {
+        this.isEdit = false;
+        this.openDialog({});
+      },
+      changeVisible(ret) {
+        this.showDialog = ret;
+      },
+      getList(page) {
+        return Array.apply(null, { length: 10, }).map((item, index) => {
+          const top1 = page * 10 + 1;
+          return {
+            name: "name-" + (top1 + index),
+            sex: "sex-" + (top1 + index),
+            phone: "phone-" + (top1 + index),
+            addr: "addr-" + (top1 + index),
+          }
+        })
+      }
+    },
   })
 </script>
 {% endblock %}

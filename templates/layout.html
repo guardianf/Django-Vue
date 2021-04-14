@@ -73,14 +73,12 @@
           <fvr-menu-item index="7-5">Download</fvr-menu-item>
         </fvr-menu-item-group>
       </fvr-submenu>
-      <div style='flex: 1'></div>
-      <fvr-menu-item index='' icon='el-icon-location' topline>Collapse sidebar</fvr-menu-item>
     </fvr-menu>
     {% endblock %}
   </fvr-aside>
 
   <fvr-main id="right">
-    <div id="content">
+    <div id="content" style="padding: 10px;">
       {% block breadcrumbs %}
         <div class="breadcrumbs"></div>
       {% endblock %}
@@ -96,13 +94,9 @@
 {% block scripts %}
 <script type="module">
   extend({
-    created() {
-      console.log('nav inited')
-    },
     methods: {
       asd(val) {
-        console.log('run asd', val)
-      }
+      },
     }
   })
   extend({
@@ -122,7 +116,53 @@
         }, {
           name: "Log out",
           command: "logout"
-        }]
+        }],
+        menus: [
+          {
+            label: "Dashboard",
+          }, {
+            label: "Robot Service",
+            path: "/robot/home/",
+            children: [{
+              label: "Robot",
+              path: "/robot/robot/",
+            }, {
+              label: "Arm",
+              path: "/robot/arm/",
+            }, {
+              label: "Joint",
+              path: "/robot/joint/",
+            }, {
+              label: "Teach",
+              path: "/robot/teach/",
+            }, {
+              label: "Arm",
+              path: "/robot/arm/",
+            }],
+          }, {
+            label: "Service Cloud",
+          }, {
+            label: "Service Cloud",
+          }, {
+            label: "Service Cloud",
+            children: [{
+              label: "Robot",
+              path: "/robot/robot/",
+            }, {
+              label: "Arm",
+              path: "/robot/arm/",
+            }, {
+              label: "Joint",
+              path: "/robot/joint/",
+            }, {
+              label: "Teach",
+              path: "/robot/teach/",
+            }, {
+              label: "Arm",
+              path: "/robot/arm/",
+            }],
+          },
+        ],
       }
     },
     methods: {
@@ -144,9 +184,6 @@
         navigateTo("{% url 'logout' %}")
       },
     },
-    created() {
-      console.log('banner inited');
-    }
   })
 </script>
 {% block sub_scripts %}{% endblock %}
