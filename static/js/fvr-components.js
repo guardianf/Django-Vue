@@ -8,8 +8,12 @@
  * @type { object }
  */
 export const fvrContainer = {
-  template: `<el-container class='fvr-container'><slot /></el-container>`,
-  created() {}
+  // template: `<el-container class='fvr-container'><slot /></el-container>`,
+	render(h) {
+		return h("el-container", {
+			class: "fvr-container",
+		}, this.$slots.default);
+	},
 }
 
 /**
