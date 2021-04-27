@@ -8,7 +8,6 @@
  * @type { object }
  */
 export const fvrContainer = {
-  // template: `<el-container class='fvr-container'><slot /></el-container>`,
 	render(h) {
 		return h("el-container", {
 			class: "fvr-container",
@@ -68,18 +67,78 @@ export const fvrBanner = {
  * @type { object }
  */
 export const fvrUserNameInput = {
-  template: `
-          <div class='fvr-input-outside' :class="['fvr-input-' + fontType, isFocus? 'fvr-input-focus' : '']">
-              <el-row type='flex' align='middle' class='fvr-input-underline fvr-font-l'>
-                  <i class='el-icon-user'></i>
-                  <input class='fvr-input-inside fvr-font-color-default' v-bind:placeholder='placeholder' :name='newName' v-model='newValue' @keyup='submit' :required='required' @focus='focus' @blur='blur' ref='input' autocomplete='off' />
-              </el-row>
-              <el-row type='flex' justify='end'>
-                  <fvr-font size='m' v-bind:type='fontType'>{{ error }}</fvr-font>
-              </el-row>
-          </div>
-      `,
-  props: ['name', 'placeholder', 'value', 'error', 'width', 'required'],
+  render(h) {
+    return h("div", {
+      class: [
+        "fvr-input-outside",
+        `fvr-input-${ this.fontType }`,
+        this.isFocus ? `fvr-input-focus` : "",
+      ].filter(item => item),
+    }, [
+      h("el-row", {
+        class: "fvr-input-underline fvr-font-l",
+        props: {
+          type: "flex",
+          align: "middle",
+        },
+      }, [
+        h("i", {
+          class: "el-icon-user",
+        }),
+        h("input", {
+          class: "fvr-input-inside fvr-font-color-default",
+          ref: "input",
+          domProps: {
+            placeholder: this.placeholder,
+            name: this.newName,
+            value: this.newValue,
+            required: this.required,
+            autocomplete: "off",
+          },
+          on: {
+            keyup: this.submit,
+            focus: this.focus,
+            blur: this.blur,
+            input:  event => {
+              this.$emit('input', event.target.value)
+            }
+          },
+        })
+      ]),
+      h("el-row", {
+        props: {
+          type: "flex",
+          justify: "end",
+        },
+      }, [
+        h("fvr-font", {
+          props: {
+            size: "m",
+            type: this.fontType,
+          },
+        }, this.error)
+      ])
+    ])
+  },
+  props: {
+    value: {},
+    name: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
+    error: {
+      type: String,
+    },
+    width: {
+      type: String,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     'fvr-font': fvrFont,
   },

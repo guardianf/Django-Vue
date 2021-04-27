@@ -63,7 +63,7 @@
   {% block scripts %}
   {% endblock %}
   <script type="module">
-    const app = new Vue({
+    window.app = new Vue({
       mixins: [...mixins],
       created() {
         console.log('app inited');
