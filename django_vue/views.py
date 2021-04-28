@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 
 def parent(request):
-    return render(request, 'global.html');
+    return render(request, 'global.html')
 
 def login(request):
     return render(request, 'login.html')

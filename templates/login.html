@@ -98,10 +98,11 @@
     methods: {
       submit({ target }) {
         var formData = new FormData()
-        formData.append('username', this.username)
-        formData.append('password', this.password)
-        formData.append('captcha', this.captcha)
-        formData.append('rememberMe', this.rememberMe)
+        formData.append('username', this.username);
+        formData.append('password', this.password);
+        formData.append('captcha', this.captcha);
+        formData.append('rememberMe', this.rememberMe);
+        formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
         axios.post("/api/v1/login/", formData).then(({data}) => {
           this.res = data;
         });

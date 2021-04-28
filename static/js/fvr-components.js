@@ -63,6 +63,15 @@ export const fvrBanner = {
 }
 
 /**
+ * define input component
+ */
+export const fvrInput = {
+  // render(h) {
+  //   return h()
+  // },
+}
+
+/**
  * define username input component
  * @type { object }
  */
@@ -178,17 +187,17 @@ export const fvrUserNameInput = {
  */
 export const fvrPasswordInput = {
   template: `
-          <div class='fvr-input-outside' :class="['fvr-input-' + fontType, isFocus? 'fvr-input-focus' : '']">
-              <el-row type='flex' align='middle' class='fvr-input-underline fvr-font-l'>
-                  <i class='el-icon-lock'></i>
-                  <input class='fvr-input-inside fvr-font-color-default' :placeholder='newPlaceholder' :name='newName' :type='type' v-model='value' @change='submit' :required='required' @focus='focus' @blur='blur' ref='input' autocomplete='off' />
-                  <i :class="['fa', type == 'password' ? 'fa-eye': 'fa-eye-slash' ]" @click='toggleInput'></i>
-              </el-row>
-              <el-row type='flex' justify='end'>
-                  <fvr-font size='m' :type='fontType'>{{ error }}</fvr-font>
-              </el-row>
-          </div>
-      `,
+    <div class='fvr-input-outside' :class="['fvr-input-' + fontType, isFocus? 'fvr-input-focus' : '']">
+      <el-row type='flex' align='middle' class='fvr-input-underline fvr-font-l'>
+        <i class='el-icon-lock'></i>
+        <input class='fvr-input-inside fvr-font-color-default' :placeholder='newPlaceholder' :name='newName' :type='type' v-model='value' @change='submit' :required='required' @focus='focus' @blur='blur' ref='input' autocomplete='off' />
+        <i :class="['fa', type == 'password' ? 'fa-eye': 'fa-eye-slash' ]" @click='toggleInput'></i>
+      </el-row>
+      <el-row type='flex' justify='end'>
+        <fvr-font size='m' :type='fontType'>{{ error }}</fvr-font>
+      </el-row>
+    </div>
+  `,
   props: ['name', 'placeholder', 'value', 'error', 'required'],
   components: {
     'fvr-font': fvrFont,
@@ -290,16 +299,32 @@ export const fvrCaptcha = {
  */
 export const fvrCheckbox = {
   template: `
-          <div class="fvr-checkbox">
-              <el-checkbox v-model="value" true-label='yes' false-label='no' @change='submit'>{{ label }}</el-checkbox>
-          </div>
-      `,
-  props: ['label', 'value'],
+    <div class="fvr-checkbox">
+        <el-checkbox :value="value" true-label='yes' false-label='no' @input='submit'>{{ label }}</el-checkbox>
+    </div>
+  `,
+  props: {
+    value: { },
+    label: {
+      type: String,
+    },
+    "true-label": {
+      type: String,
+    },
+    "false-label": {
+      type: String,
+    },
+  },
+  computed: {
+    newValue() {
+      return this.value;
+    },
+  },
   methods: {
-    submit() {
-      this.$emit("input", this.value)
-    }
-  }
+    submit(val) {
+      this.$emit("input", val);
+    },
+  },
 }
 
 /**
