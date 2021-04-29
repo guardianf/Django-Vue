@@ -105,11 +105,10 @@ export const fvrUserNameInput = {
             autocomplete: "off",
           },
           on: {
-            keyup: this.submit,
             focus: this.focus,
             blur: this.blur,
             input:  event => {
-              this.$emit('input', event.target.value)
+              this.$emit('input', event.target.value);
             }
           },
         })
@@ -168,8 +167,8 @@ export const fvrUserNameInput = {
     }
   },
   methods: {
-    submit() {
-      this.$emit('input', this.value)
+    submit(val) {
+      this.$emit('input', val)
     },
     focus() {
       this.$refs.input.focus();
@@ -195,9 +194,9 @@ export const fvrPasswordInput = {
           :placeholder='newPlaceholder'
           :name='newName'
           :type='type'
-          v-model='newValue'
-          @change='submit'
+          :value='newValue'
           :required='required'
+          @input='submit'
           @focus='focus'
           @blur='blur'
           ref='input'
@@ -217,7 +216,6 @@ export const fvrPasswordInput = {
     return {
       type: this.name == 'password' ? 'password' : '',
       isFocus: false,
-      newValue: this.value,
     }
   },
   computed: {
@@ -229,15 +227,17 @@ export const fvrPasswordInput = {
     },
     newName() {
       return this.name;
-    }
+    },
+    newValue() {
+      return this.value;
+    },
   },
   methods: {
     toggleInput() {
-
       this.type = this.type === 'password' ? '' : 'password'
     },
-    submit() {
-      this.$emit('input', this.value)
+    submit(e) {
+      this.$emit('input', e.target.value)
     },
     focus() {
       this.$refs.input.focus();
@@ -259,7 +259,16 @@ export const fvrCaptcha = {
       <el-row type='flex' align='middle' class='fvr-font-l'>
         <el-col :span='15'>
           <el-row type='flex' justify='start' align='middle' class='fvr-input-underline'>
-            <input class='fvr-input-inside fvr-font-color-default' :placeholder='placeholder' :name='name' v-model='newValue' @change='submit' :required='required' @focus='focus' @blur='blur' ref='input' />
+            <input
+              class='fvr-input-inside fvr-font-color-default'
+              ref='input'
+              :placeholder='placeholder'
+              :name='name'
+              :value='newValue'
+              :required='required'
+              @input='submit'
+              @focus='focus'
+              @blur='blur' />
           </el-row>
         </el-col>
         <el-col :span='8' :offset='1'>
@@ -281,17 +290,19 @@ export const fvrCaptcha = {
     return {
       src: '/api/v1/captcha/',
       isFocus: false,
-      newValue: this.value,
     }
   },
   computed: {
     type() {
       return this.error !== '' ? 'error' : 'default'
     },
+    newValue() {
+      return this.value;
+    },
   },
   methods: {
-    submit() {
-      this.$emit('input', this.value)
+    submit(e) {
+      this.$emit('input', e.target.value);
     },
     refresh() {
       this.src = "/api/v1/captcha/?t=" + Math.random()

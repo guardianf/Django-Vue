@@ -69,32 +69,6 @@
     mounted() {
       this.$refs.init_focus.focus();
     },
-    watch: {
-      res: function(newVal, oldVal) {
-        this.errorVarify = this.errorUserOrPass = ''
-        switch(newVal.code) {
-          case 20401:
-            this.errorVarify = newVal.msg
-            break;
-          case 20402:
-          case 20403:
-            this.errorUserOrPass = newVal.msg
-            break;
-          case 20200:
-            const { remember_me, url, token } = newVal.data;
-            const cookie = new Cookie();
-            if(remember_me && this.rememberMe === 'yes') {
-              cookie.setCookie('rememberMe', remember_me);
-            }
-            navigateTo(url, token);
-            break;
-          }
-        this.$refs.code.refresh()
-      }
-    },
-    mounted() {
-      this.$refs.init_focus.focus();
-    },
     methods: {
       submit({ target }) {
         var formData = new FormData()
@@ -104,8 +78,9 @@
         formData.append('rememberMe', this.rememberMe);
         formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
         axios.post("/api/v1/login/", formData).then(res => {
-          console.log(res);
-          // this.res = data;
+          if(res.data){
+            navigateTo("/home/");
+          }
         });
       },
     }
