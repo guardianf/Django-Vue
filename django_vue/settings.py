@@ -25,7 +25,7 @@ SECRET_KEY = '&-myp87d*xg#1=8&0=f^palono6%()labgn5@#794@kh6mbbz*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -50,6 +50,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_vue.urls'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 TEMPLATES = [
     {
