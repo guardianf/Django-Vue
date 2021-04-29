@@ -103,8 +103,9 @@
         formData.append('captcha', this.captcha);
         formData.append('rememberMe', this.rememberMe);
         formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
-        axios.post("/api/v1/login/", formData).then(({data}) => {
-          this.res = data;
+        axios.post("/api/v1/login/", formData).then(res => {
+          console.log(res);
+          // this.res = data;
         });
       },
     }
