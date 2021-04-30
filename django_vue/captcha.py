@@ -22,7 +22,7 @@ class CaptchaUtil:
         self.line_num = 5
         self.bgcolor = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         self.frontcolor = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        self.font = os.path.join(settings.BASE_DIR, "static/fonts/Handel Gothic Regular.ttf")
+        self.font = os.path.join(settings.BASE_DIR, "static/fonts/OPTIHandelGothic-Light.otf")
 
     def generate_image(self):
         image = Image.new("RGB", size=(self.width, self.height), color=self.bgcolor)

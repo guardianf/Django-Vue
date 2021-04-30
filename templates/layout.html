@@ -21,15 +21,16 @@
 
 {% block banner %}
   <fvr-banner id='home'>
-    <fvr-avatar :src='userInfo.avatar'></fvr-avatar>
-    <fvr-font style='margin: 0 10px;'>[[ userInfo.name ]]</fvr-font>
-    <fvr-dropdown :lists="lists" @command='dropdownClick'></fvr-dropdown>
+    <fvr-dropdown :lists="lists" @command='dropdownClick'>
+      <fvr-avatar :src='userInfo.avatar'></fvr-avatar>
+      <fvr-font style='margin: 0 10px;'>[[ userInfo.name ]]</fvr-font>
+    </fvr-dropdown>
   </fvr-banner>
 {% endblock %}
 
 {% block body %}
 <fvr-container>
-  <fvr-aside style='width: 335px;' id='nav'>
+  <fvr-aside style='width: auto;' id='nav'>
     {% block slide_menu %}
     <fvr-menu @choose='asd'>
       <fvr-menu-item index='1' icon="el-icon-location" route="{% url 'home' %}">Dashboard</fvr-menu-item>
@@ -73,8 +74,6 @@
           <fvr-menu-item index="7-5">Download</fvr-menu-item>
         </fvr-menu-item-group>
       </fvr-submenu>
-      <div style='flex: 1'></div>
-      <fvr-menu-item index='' icon='el-icon-location' topline>Collapse sidebar</fvr-menu-item>
     </fvr-menu>
     {% endblock %}
   </fvr-aside>
@@ -96,15 +95,13 @@
 {% block scripts %}
 <script type="module">
   extend({
-    created() {
-      console.log('nav inited')
-    },
     methods: {
       asd(val) {
         console.log('run asd', val)
       }
     }
   })
+  // banner
   extend({
     delimiters: ["[[", "]]"],
     data() {
@@ -144,9 +141,6 @@
         navigateTo("{% url 'logout' %}")
       },
     },
-    created() {
-      console.log('banner inited');
-    }
   })
 </script>
 {% block sub_scripts %}{% endblock %}

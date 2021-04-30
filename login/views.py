@@ -9,7 +9,6 @@ class Login(View):
     password = request.POST["password"]
     captcha = request.POST["captcha"]
     session_captcha = request.session.get(settings.SESSION_CAPTCHA)
-    print(captcha, session_captcha)
     ret = {}
     if username == "yubin" and password == "1" and captcha == session_captcha:
       ret = {

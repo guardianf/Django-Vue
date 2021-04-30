@@ -12,14 +12,18 @@
     height: 100%;
   }
   form {
-    width: 488px;
-    height: 509px;
+    padding: 20px;
+    width: 340px;
+    height: auto;
     border: 1px solid #979797;
     box-shadow: RGBA(0,0,0,0.5) 0px 2px 4px;
     text-align: center;
     display: flex;
     flex-flow: column;
     align-items: center;
+  }
+  form > * {
+    margin: 10px !important;
   }
 </style>
 {% endblock %}
@@ -33,17 +37,18 @@
   <el-col :span='12'>
   </el-col>
   <el-col :span='12'>
-    <fvr-row class='main' align='middle' type='flex' justify='center'>
-      <form class="form-group" method="post" action="{% url 'login' %}" @submit.prevent="submit($event)">
-        <fvr-font class="form-signin-heading" style="font-size: 36px;margin-top: 50px;" size='xl'>Sign In</fvr-font>
-        <fvr-username-input style="width: 300px; margin-top: 50px" name="username" placeholder="username or email" v-model="username" :error="errorUserOrPass" required ref='init_focus'></fvr-username-input>
-        <fvr-password-input style="width: 300px; margin-top: 25px" name="password" placeholder="password" v-model="password" :error="errorUserOrPass" required></fvr-password-input>
-        <fvr-captcha style="width: 300px; margin-top: 25px" name="captcha" placeholder="captcha" v-model="captcha" :error="errorVarify" ref='code' required></fvr-captcha>
-        <fvr-row style='width: 300px;margin-top: 25px' justify='space-between'>
+    <fvr-row class='main fvr-font-s' align='middle' type='flex' justify='center'>
+      <form method="post" action="{% url 'login' %}" @submit.prevent="submit($event)">
+        <fvr-font size='xl'>Sign In</fvr-font>
+        <fvr-username-input style="width: 100%;" name="username" placeholder="username or email" v-model="username" :error="errorUserOrPass" required ref='init_focus'></fvr-username-input>
+        <fvr-password-input style="width: 100%;" name="password" placeholder="password" v-model="password" :error="errorUserOrPass" required></fvr-password-input>
+        <fvr-captcha style="width: 100%;" name="captcha" placeholder="captcha" v-model="captcha" :error="errorVarify" ref='code' required></fvr-captcha>
+        <fvr-row style='width: 100%;' justify='space-between'>
           <fvr-checkbox label='Remember me' v-model='rememberMe'></fvr-checkbox>
           <a href="">Forget password?</a>
         </fvr-row>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" style="width: 300px;margin-top: 25px;">Login</button>
+        <fvr-button type="primary" style="width: 100%;" @click.native="submit">Login</fvr-button>
+        <button type="submit" style="display: none;"></button>
       </form>
     </fvr-row>
   </el-col>
@@ -70,7 +75,7 @@
       this.$refs.init_focus.focus();
     },
     methods: {
-      submit({ target }) {
+      submit() {
         var formData = new FormData()
         formData.append('username', this.username);
         formData.append('password', this.password);
