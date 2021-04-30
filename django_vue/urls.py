@@ -18,7 +18,8 @@ from django.conf.urls import url
 from django.urls import (path, include, )
 
 from login import rest_url as rest_url_login
-from . import views
+import django_vue.rest_url as rest_url_common
+from django_vue import views
 
 urlpatterns = [
   # path('admin/', admin.site.urls),
@@ -33,5 +34,6 @@ urlpatterns = [
   path('test/', views.test, name='test'),
 
   # rest api
+  path("api/v1/", include(rest_url_common), name="common"),
   path('api/v1/', include(rest_url_login), name="login"),
 ]

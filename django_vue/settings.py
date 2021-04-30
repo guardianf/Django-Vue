@@ -25,7 +25,13 @@ SECRET_KEY = '&-myp87d*xg#1=8&0=f^palono6%()labgn5@#794@kh6mbbz*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ROOT_URLCONF = 'django_vue.urls'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+SESSION_CAPTCHA = "captcha"
+
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -48,8 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-ROOT_URLCONF = 'django_vue.urls'
 
 TEMPLATES = [
     {
