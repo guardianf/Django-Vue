@@ -495,11 +495,10 @@ export const fvrMain = {
 export const fvrMenu = {
   template: `
     <el-menu
-      style="transition: .3s;"
+      class="fvr-menu"
       unique-opened
       :collapse="collapse"
       :default-active="active"
-      :class="['fvr-menu', 'fvr-font-s', collapse ? 'fvr-menu--collapse': '']"
       @select="handler">
       <slot></slot>
       <div class="fvr-menu--span"></div>

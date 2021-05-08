@@ -62,12 +62,12 @@ html, body {
   flex-flow: column;
   color: #797979;
 }
-.fvr-menu.fvr-menu--collapse {
-  width: 60px;
+.fvr-menu.el-menu--collapse {
+  width: 62px;
 }
 .fvr-menu .el-submenu__title span {
   color: #797979;
-  padding-left: 10px;
+  padding-left: 0px;
 }
 .fvr-menu.el-menu--collapse > div > .el-submenu > .el-submenu__title span {
   height: 0;
@@ -96,9 +96,11 @@ html, body {
 .fvr-submenu .el-submenu__title:focus .fvr-menu-item--label, .fvr-submenu .el-submenu__title:hover .fvr-menu-item--label {
   color: var(--color-text-hover);
 }
-.fvr-menu-item--label{padding-left:10px;}
-.fvr-submenu   .fvr-menu-item--label{
-  padding-left:20px;
+.fvr-menu-item--label {
+  padding-left: 0px;
+}
+.fvr-submenu .fvr-menu-item--label {
+  padding-left: 10px;
   display: inline-block;
 }
 .fvr-menu i, .fvr-menu-item-group i {
