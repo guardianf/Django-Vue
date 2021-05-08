@@ -15,6 +15,7 @@ export const fvrContainer = {
   },
 }
 
+
 /**
  * define font-size
  * @type { array }
@@ -85,7 +86,7 @@ export const fvrUserNameInput = {
       ].filter(item => item),
     }, [
       h("el-row", {
-        class: "fvr-input-underline fvr-font-l",
+        class: "fvr-input-underline",
         props: {
           type: "flex",
           align: "middle",
@@ -95,7 +96,7 @@ export const fvrUserNameInput = {
           class: "el-icon-user",
         }),
         h("input", {
-          class: "fvr-input-inside fvr-font-color-default",
+          class: "fvr-input-inside fvr-font-color-default fvr-font-s",
           ref: "input",
           domProps: {
             placeholder: this.placeholder,
@@ -112,19 +113,6 @@ export const fvrUserNameInput = {
             }
           },
         })
-      ]),
-      h("el-row", {
-        props: {
-          type: "flex",
-          justify: "end",
-        },
-      }, [
-        h("fvr-font", {
-          props: {
-            size: "m",
-            type: this.fontType,
-          },
-        }, this.error)
       ])
     ])
   },
@@ -187,10 +175,10 @@ export const fvrUserNameInput = {
 export const fvrPasswordInput = {
   template: `
     <div class='fvr-input-outside' :class="['fvr-input-' + fontType, isFocus? 'fvr-input-focus' : '']">
-      <el-row type='flex' align='middle' class='fvr-input-underline fvr-font-l'>
+      <el-row type='flex' align='middle' class='fvr-input-underline'>
         <i class='el-icon-lock'></i>
         <input
-          class='fvr-input-inside fvr-font-color-default'
+          class='fvr-input-inside fvr-font-color-default fvr-font-s'
           :placeholder='newPlaceholder'
           :name='newName'
           :type='type'
@@ -202,9 +190,6 @@ export const fvrPasswordInput = {
           ref='input'
           autocomplete='off' />
         <i :class="['fa', type == 'password' ? 'fa-eye': 'fa-eye-slash' ]" @click='toggleInput'></i>
-      </el-row>
-      <el-row type='flex' justify='end'>
-        <fvr-font size='m' :type='fontType'>{{ error }}</fvr-font>
       </el-row>
     </div>
   `,
@@ -256,11 +241,11 @@ export const fvrPasswordInput = {
 export const fvrCaptcha = {
   template: `
     <div class='fvr-input-outside' :class="['fvr-input-' + type, isFocus? 'fvr-input-focus' : '']">
-      <el-row type='flex' align='middle' class='fvr-font-l'>
+      <el-row type='flex' align='middle'>
         <el-col :span='15'>
           <el-row type='flex' justify='start' align='middle' class='fvr-input-underline'>
             <input
-              class='fvr-input-inside fvr-font-color-default'
+              class='fvr-input-inside fvr-font-color-default fvr-font-s'
               ref='input'
               :placeholder='placeholder'
               :name='name'
@@ -276,9 +261,6 @@ export const fvrCaptcha = {
             <img :src="src" @click='refresh' />
           </el-row>
         </el-col>
-      </el-row>
-      <el-row type='flex' justify='end'>
-        <fvr-font size='m' :type='type'>{{ error }}</fvr-font>
       </el-row>
     </div>
   `,
@@ -317,6 +299,38 @@ export const fvrCaptcha = {
   }
 }
 
+export const fvrButton = {
+  template: `
+    <el-tooltip popper-class="fvr-tooltip" v-if="newContent" :content="newContent" :hide-after="1000">
+        <el-button :class="['fvr-button', newType ? 'fvr-button--' + newType : '']" :circle="isCircle" :icon="newIcon" :size="newSize" :type="newType" :disabled="disabled"><slot></slot></el-button>
+    </el-tooltip>
+    <el-button v-else :class="['fvr-button', newType ? 'fvr-button--' + newType : '']" :circle="isCircle" :icon="newIcon" :size="newSize" :type="newType" :disabled="disabled"><slot></slot></el-button>
+  `,
+  props: {
+    circle: Boolean,
+    icon: String,
+    size: String,
+    type: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    content: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      isCircle: this.circle,
+      newIcon: this.icon,
+      newSize: this.size,
+      newType: this.type,
+      newContent: this.content,
+    }
+  },
+}
+
 /**
  * define checkbox component
  * @type { object }
@@ -324,7 +338,7 @@ export const fvrCaptcha = {
 export const fvrCheckbox = {
   template: `
     <div class="fvr-checkbox">
-        <el-checkbox :value="value" true-label='yes' false-label='no' @input='submit'>{{ label }}</el-checkbox>
+        <el-checkbox class="fvr-font-s" :value="value" true-label='yes' false-label='no' @input='submit'>{{ label }}</el-checkbox>
     </div>
   `,
   props: {
@@ -421,17 +435,27 @@ export const fvrDropdownMenu = {
  */
 export const fvrDropdown = {
   template: `
-    <el-dropdown @command="handleCommand" :class="['fvr-dropdown', isHover ? 'fvr-dropdown-hover' : '']" @visible-change='hover'>
-      <span class="el-dropdown-link"><i class="el-icon--right el-icon-arrow-down"></i></span>
-      <fvr-dropdown-menu slotblock="dropdown">
-        <fvr-dropdown-item v-for="list in lists" :command="list.command" :index="list.index">{{list.name}}</fvr-dropdown-item>
+    <el-dropdown
+      :class="['fvr-dropdown', isHover ? 'fvr-dropdown-hover' : '']"
+      @command="handleCommand"
+      @visible-change="hover">
+      <span class="el-dropdown-link" style="height: 100%; display: flex; align-items: center;">
+        <slot></slot>
+        <i class="el-icon--right el-icon-arrow-down"></i>
+      </span>
+      <fvr-dropdown-menu name="dropdown">
+        <fvr-dropdown-item
+          v-for="(list, index) in lists"
+          :command="list.command"
+          :key="index"
+        >{{ list.name }}</fvr-dropdown-item>
       </fvr-dropdown-menu>
-    </el-dropdown>
+  </el-dropdown>
   `,
-  props: ['lists'],
+  props: ["lists", ],
   components: {
     "fvr-dropdown-item": fvrDropdownItem,
-    'fvr-dropdown-menu': fvrDropdownMenu,
+    "fvr-dropdown-menu": fvrDropdownMenu,
   },
   data() {
     return {
@@ -440,7 +464,7 @@ export const fvrDropdown = {
   },
   methods: {
     handleCommand(str) {
-      this.$emit('command', str);
+      this.$emit("command", str);
     },
     hover(res) {
       this.isHover = res;
@@ -469,32 +493,79 @@ export const fvrMain = {
  * @type {Object}
  */
 export const fvrMenu = {
-  template: `<el-menu class='fvr-menu' collapse='collapse' @select='handleEvent'><slot/></el-menu>`,
-  methods: {
-    handleEvent(key, keyPath) {
-      console.log(key)
-      this.$emit('choose', key)
+  template: `
+    <el-menu
+      class="fvr-menu"
+      unique-opened
+      :collapse="collapse"
+      :default-active="active"
+      @select="handler">
+      <slot></slot>
+      <div class="fvr-menu--span"></div>
+      <fvr-menu-item
+        topline
+        index="collapse"
+        :icon="[collapse ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left']"
+        @click.native.stop.capture="triggerCollapse">
+        Collapse sidebar
+      </fvr-menu-item>
+    </el-menu>
+  `,
+  props: {
+    active: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      collapse: false,
     }
-  }
+  },
+  methods: {
+    handler(key, keyPath) {
+      this.$emit("handler", key, keyPath);
+    },
+    triggerCollapse() {
+      this.collapse = !this.collapse;
+    },
+  },
 }
 
 /**
  * define a submenu component
  * @type {Object}
  */
-export const fvrSubmenu = {
-  template: `
-    <div>
-      <el-submenu :index='index' class="fvr-submenu">
-        <template slot='title' class="fvr-submenu--title">
-          <i :class='icon'></i>
-          <i>{{ label }}</i>
-        </template>
-        <slot />
-      </el-submenu>
-    </div>
-  `,
-  props: ['index', 'icon', 'label'],
+ export const fvrSubmenu = {
+  template: `<div>
+    <el-submenu :index="newIndex" class="fvr-submenu">
+      <template slot="title" class="fvr-submenu--title">
+        <embed v-if="isFvrIcon":src="newIcon" class="fvr-menu-item--icon" type="image/svg+xml" width="20" height="20">
+        <i v-else :class="[icon, 'fvr-menu-item--icon']"></i>
+        <span slot="title" class="fvr-menu-item--label fvr-font-s">{{ label }}</span>
+      </template>
+      <slot></slot>
+    </el-submenu>
+  </div>`,
+  props: ["index", "icon", "label", ],
+  computed: {
+    newIndex() {
+      return this.index;
+    },
+    isFvrIcon() {
+      return /^fvr-icon-/g.test(this.icon);
+    },
+    newIcon() {
+      if(this.isFvrIcon) {
+        const imgPath = [
+          `/static/img/icons`,
+        ];
+        const strToPath = this.icon.replace(/^fvr-icon-/g, "").split("-");
+        return imgPath.concat(strToPath).join("/") + ".svg";
+      } else {
+        return this.icon;
+      }
+    },
+  },
 }
 
 /**
@@ -503,31 +574,44 @@ export const fvrSubmenu = {
  */
 export const fvrMenuItemGroup = {
   template: `
-    <el-menu-item-group class='fvr-menu-item-group'>
-      <template slot='title'>
-        <i :class='icon'></i>
-        <i>{{ label }}</i>
-      </template>
-      <slot />
+    <el-menu-item-group class="fvr-menu-item-group">
+      <span slot="title" class="fvr-font-s">{{ label }}</span>
+      <slot></slot>
     </el-menu-item-group>
   `,
-  props: ['icon', 'label', ],
+  props: ["icon", "label", ],
 }
 
+/**
+ * define menu item component
+ */
 export const fvrMenuItem = {
   template: `
-    <div>
-      <el-menu-item :class="['fvr-menu-item', typeof topline !== 'undefined' ? 'fvr-menu-item--topline': '']" :route="route" @click="enter" :index="index">
-        <i :class='icon'></i>
-        <i><slot /></i>
-      </el-menu-item>
-    </div>
+    <el-menu-item :class="['fvr-menu-item', typeof topline !== 'undefined' ? 'fvr-menu-item--topline': '']" :index="newIndex">
+      <embed v-if="isFvrIcon":src="newIcon" class="fvr-menu-item--icon" type="image/svg+xml" width="20" height="20">
+      <i v-else :class="[icon, 'fvr-menu-item--icon']"></i>
+      <span slot="title" class="fvr-menu-item--label fvr-font-s">
+        <slot></slot>
+      </span>
+    </el-menu-item>
   `,
-  props: ['icon', 'index', 'topline', "route", ],
-  methods: {
-    enter() {
-      if (this.route) {
-        navigateTo(this.route)
+  props: ["icon", "index", "topline", ],
+  computed: {
+    newIndex() {
+      return this.index;
+    },
+    isFvrIcon() {
+      return /^fvr-icon-/g.test(this.icon);
+    },
+    newIcon() {
+      if(this.isFvrIcon) {
+        const imgPath = [
+          `/static/img/icons`,
+        ];
+        const strToPath = this.icon.replace(/^fvr-icon-/g, "").split("-");
+        return imgPath.concat(strToPath).join("/") + ".svg";
+      } else {
+        return this.icon;
       }
     },
   },
@@ -551,6 +635,7 @@ const Components = {
     Vue.component('fvr-submenu', fvrSubmenu);
     Vue.component('fvr-menu-item-group', fvrMenuItemGroup);
     Vue.component('fvr-menu-item', fvrMenuItem);
+    Vue.component('fvr-button', fvrButton);
   },
 };
 export default Components;
