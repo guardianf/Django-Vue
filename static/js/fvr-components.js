@@ -308,7 +308,7 @@ export const fvrButton = {
   `,
   props: {
     circle: Boolean,
-    icon: String,
+    icon: [String, Array, ],
     size: String,
     type: String,
     disabled: {
@@ -522,8 +522,8 @@ export const fvrMenu = {
     }
   },
   methods: {
-    handler(key, keyPath) {
-      this.$emit("handler", key, keyPath);
+    handler(key) {
+      this.$emit("handler", key);
     },
     triggerCollapse() {
       this.collapse = !this.collapse;
@@ -537,7 +537,7 @@ export const fvrMenu = {
  */
  export const fvrSubmenu = {
   template: `<div>
-    <el-submenu :index="newIndex" class="fvr-submenu">
+    <el-submenu :index="newIndex" class="fvr-submenu" :key="newIndex">
       <template slot="title" class="fvr-submenu--title">
         <embed v-if="isFvrIcon":src="newIcon" class="fvr-menu-item--icon" type="image/svg+xml" width="20" height="20">
         <i v-else :class="[icon, 'fvr-menu-item--icon']"></i>
@@ -546,7 +546,17 @@ export const fvrMenu = {
       <slot></slot>
     </el-submenu>
   </div>`,
-  props: ["index", "icon", "label", ],
+  props: {
+    index: {
+      type: [String, Number],
+    },
+    icon: {
+      type: [String, Array, ],
+    },
+    label: {
+      type: String,
+    },
+  },
   computed: {
     newIndex() {
       return this.index;
@@ -587,7 +597,7 @@ export const fvrMenuItemGroup = {
  */
 export const fvrMenuItem = {
   template: `
-    <el-menu-item :class="['fvr-menu-item', typeof topline !== 'undefined' ? 'fvr-menu-item--topline': '']" :index="newIndex">
+    <el-menu-item :class="['fvr-menu-item', topline ? 'fvr-menu-item--topline': '']" :index="newIndex" :key="newIndex">
       <embed v-if="isFvrIcon":src="newIcon" class="fvr-menu-item--icon" type="image/svg+xml" width="20" height="20">
       <i v-else :class="[icon, 'fvr-menu-item--icon']"></i>
       <span slot="title" class="fvr-menu-item--label fvr-font-s">
@@ -595,7 +605,14 @@ export const fvrMenuItem = {
       </span>
     </el-menu-item>
   `,
-  props: ["icon", "index", "topline", ],
+  props: {
+    icon: [String, Array, ],
+    index: [String, Number, ],
+    topline: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     newIndex() {
       return this.index;

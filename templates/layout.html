@@ -32,48 +32,15 @@
 <fvr-container>
   <fvr-aside style='width: auto;' id='nav'>
     {% block slide_menu %}
-    <fvr-menu @choose='asd'>
-      <fvr-menu-item index='1' icon="el-icon-location" route="{% url 'home' %}">Dashboard</fvr-menu-item>
-      <fvr-submenu index='2' icon='el-icon-location' label='Robot Service'>
-        <fvr-menu-item-group label='Robot Service'>
-          <fvr-menu-item index='2-1'>Robot</fvr-menu-item>
-          <fvr-menu-item index='2-2' route="{% url 'arm' %}">Arm</fvr-menu-item>
-          <fvr-menu-item index='2-3' route="{% url 'box' %}">Robot ControlBox</fvr-menu-item>
-          <fvr-menu-item index='2-4' route="{% url 'teaches' %}">AI ControlBox</fvr-menu-item>
-          <fvr-menu-item index='2-5'>Teach</fvr-menu-item>
-          <fvr-menu-item index='2-6'>Motion Bar</fvr-menu-item>
-          <fvr-menu-item index='2-7'>Joint</fvr-menu-item>
-        </fvr-menu-item-group>
-      </fvr-submenu>
-      <fvr-submenu index='3' icon='el-icon-location' label='Software Service'>
-        <fvr-menu-item-group label='Software Service'>
-          <fvr-menu-item index='3-1'>License</fvr-menu-item>
-        </fvr-menu-item-group>
-      </fvr-submenu>
-      <fvr-submenu index='4' icon='el-icon-location' label='Order Service'>
-        <fvr-menu-item-group label='Order Service'>
-          <fvr-menu-item index='3-1'>Product</fvr-menu-item>
-          <fvr-menu-item index='3-1'>Order</fvr-menu-item>
-        </fvr-menu-item-group>
-      </fvr-submenu>
-      <fvr-submenu index='5' icon='el-icon-location' label='SI Service'>
-        <fvr-menu-item-group label='SI Service'>
-        </fvr-menu-item-group>
-      </fvr-submenu>
-      <fvr-submenu index='6' icon='el-icon-location' label='Download Service'>
-        <fvr-menu-item-group label='Download Service'>
-          <fvr-menu-item index="6-1">Ethernet Interface</fvr-menu-item>
-        </fvr-menu-item-group>
-      </fvr-submenu>
-      <fvr-submenu index='7' icon='el-icon-location' label='Management Service'>
-        <fvr-menu-item-group label='Management Service'>
-          <fvr-menu-item index="7-1">User</fvr-menu-item>
-          <fvr-menu-item index="7-2">Role</fvr-menu-item>
-          <fvr-menu-item index="7-3">Menu</fvr-menu-item>
-          <fvr-menu-item index="7-4">Group</fvr-menu-item>
-          <fvr-menu-item index="7-5">Download</fvr-menu-item>
-        </fvr-menu-item-group>
-      </fvr-submenu>
+    <fvr-menu @handler='menuClick'>
+      <template v-for="(menu, index) in menus">
+        <fvr-submenu icon='el-icon-location' v-if="menu.children && menu.children.length > 0" :label="menu.name" :index="menu.path">
+          <fvr-menu-item-group :label="menu.name">
+            <fvr-menu-item v-for="(child, cindex) in menu.children" :index="child.path" :key="child.path">[[ child.name ]]</fvr-menu-item>
+          </fvr-menu-item-group>
+        </fvr-submenu>
+        <fvr-menu-item v-else icon='el-icon-location' :index="menu.path">[[ menu.name ]]</fvr-menu-item>
+      </template>
     </fvr-menu>
     {% endblock %}
   </fvr-aside>
@@ -94,10 +61,62 @@
 
 {% block scripts %}
 <script type="module">
+  // menu component
   extend({
+    delimiters: ["[[", "]]"],
+    data() {
+      return {
+        menus: [{
+          name: "Dashboard",
+          path: "/home/",
+        }, {
+          name: "Robot Service",
+          path: "/robot/",
+          children: [{
+            name: "Robots",
+            path: "",
+          }, {
+            name: "Arms",
+            path: "/robot/arm/",
+          }, {
+            name: "Joints",
+            path: "/robot/joint/",
+          }, {
+            name: "Teaches",
+            path: "/robot/teach/",
+          }, {
+            name: "Controls",
+            path: "/robot/control/",
+          }, ],
+        }, {
+          name: "Service Interface",
+          path: "/si/",
+        }, {
+          name: "Download Service",
+          path: "/download/",
+          children: [{
+            name: "Download Packages",
+            path: "/download/download_center/",
+          }],
+        }, {
+          name: "Management Service",
+          path: "/manage/",
+          children: [{
+            name: "User",
+            path: "/rbac/user/",
+          }, {
+            name: "Role",
+            path: "/rbac/role/",
+          }, {
+            name: "Permission",
+            path: "/rbac/Permission/",
+          }, ],
+        }, ],
+      }
+    },
     methods: {
-      asd(val) {
-        console.log('run asd', val)
+      menuClick(path) {
+        navigateTo(path);
       }
     }
   })
