@@ -4,10 +4,36 @@
 {% block page_styles %}
 {% endblock %}
 
+
 {% block content %}
 Arm List
+<fvr-table :data="table">
+  <fvr-table-column prop="name" label="Name"></fvr-table-column>
+  <fvr-table-column prop="serial_number" label="SN"></fvr-table-column>
+</fvr-table>
 {% endblock %}
 
 
 {% block sub_scripts %}
+<script>
+  // page
+  extend({
+    data() {
+      return {
+        table: [],
+      }
+    },
+    created() {
+      this.list();
+    },
+    methods: {
+      list() {
+        axios({
+          type: "get",
+          url: "/robot/arms/?page=0",
+        }).then(res => this.table = res.data)
+      }
+    },
+  })
+</script>
 {% endblock %}
