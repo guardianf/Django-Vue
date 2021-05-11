@@ -18,6 +18,7 @@ from django.conf.urls import url
 from django.urls import (path, include, )
 
 from login import rest_url as rest_url_login
+from robot import rest_url as rest_url_robot
 import django_vue.rest_url as rest_url_common
 from django_vue import views
 
@@ -26,14 +27,15 @@ urlpatterns = [
   path('global/', views.parent, name='global'),
   path('login/', views.login, name='login'),
   path('logout/', views.logout, name='logout'),
-  path('home/', views.ListView.as_view(), name='home', kwargs={"name": "test"}),
-  path('robot/list_arm/', views.ListView.as_view(), name='arm'),
-  path('robot/list_box', views.ListView.as_view(), name='box'),
-  path('robot/list_teaches', views.ListView.as_view(), name='teaches'),
+  path('home/', views.HomeView.as_view(), name='home'),
+  path('robot/arm/', views.ArmView.as_view(), name='arm'),
+  path('robot/joint/', views.HomeView.as_view(), name='box'),
+  path('robot/teach/', views.HomeView.as_view(), name='teaches'),
 
   path('test/', views.test, name='test'),
 
   # rest api
   path("api/v1/", include(rest_url_common), name="common"),
   path('api/v1/', include(rest_url_login), name="login"),
+  path('api/v1/robot/', include(rest_url_robot), name="robot"),
 ]

@@ -25,10 +25,13 @@ def logout(request):
 def test(request):
   return render(request, 'test.html')
 
-class ListView(View):
+class HomeView(View):
   def get(self, request, *args, **kwargs):
-    print(args)
     return render(request, "home.html")
+
+class ArmView(View):
+  def get(self, request, *args, **kwargs):
+    return render(request, "arm.html")
 
 class CaptchaAPIView(View):
   def get(self, request, *args, **kwargs):
