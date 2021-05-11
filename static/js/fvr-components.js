@@ -634,6 +634,121 @@ export const fvrMenuItem = {
   },
 };
 
+/**
+ * define a table component
+ */
+export const fvrTable = {
+  template: `
+    <el-table
+      :empty-text="emptyInfo"
+      class="fvr-table"
+      :data="tableData"
+      @selection-change="handleSelectionChange">
+      <slot></slot>
+    </el-table>
+  `,
+  props: {
+    data: {
+      type: Array,
+      default: [],
+    },
+    "empty-text": {
+      type: String,
+      default: "No Data",
+    },
+  },
+  computed: {
+    tableData() {
+      return this.data;
+    },
+    emptyInfo() {
+      return this.emptyText;
+    },
+  },
+  methods: {
+    handleSelectionChange() {
+      this.$emit("selection");
+    },
+  },
+};
+
+/**
+ * define a table column component
+ */
+ export const fvrTableColumn = {
+  template: `
+    <el-table-column
+      :prop="newProp"
+      :label="newLabel"
+      :index="newIndex"
+      :type="newType"
+      :width="width"
+      :formatter="formatter">
+        <template v-for="(index, name) in $slots" :slot="name">
+          <slot :name="name"></slot>
+        </template>
+        <template v-for="(index, name) in $scopedSlots" v-slot:[name]="slotProps">
+          <slot :name="name" v-bind="slotProps"></slot>
+        </template>
+    </el-table-column>
+  `,
+  props: {
+    prop: {
+      type: String,
+      default: undefined,
+    },
+    label: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "",
+    },
+    index: {
+      type: [Number, Function],
+    },
+    width: {
+      type: String,
+    },
+    formatter: {
+      type: Function,
+      default: (row, column, cellValue, index, ) => {
+        return cellValue;
+      },
+    },
+  },
+  data() {
+    return {
+      newProp: this.prop,
+      newLabel: this.label,
+      newType: this.type,
+      newIndex: this.index,
+    }
+  },
+}
+
+/**
+ * breadcrumb component
+ */
+ const fvrBreadcrumb = {
+  template: `
+    <el-breadcrumb separator-class="el-icon-arrow-right" >
+      <el-breadcrumb-item
+        v-for="(item, index) in path"
+        :to="{path: item.path}"
+        :key="index"
+        @click.native="handleClick(item)">{{ item.name }}</el-breadcrumb-item>
+    </el-breadcrumb>
+    `,
+  props: ["path", ],
+  methods: {
+    handleClick(item) {
+      this.$emit("click", item.path);
+    },
+  },
+}
+
 const Components = {
   install(Vue) {
     Vue.component('fvr-container', fvrContainer);
@@ -652,7 +767,10 @@ const Components = {
     Vue.component('fvr-submenu', fvrSubmenu);
     Vue.component('fvr-menu-item-group', fvrMenuItemGroup);
     Vue.component('fvr-menu-item', fvrMenuItem);
+    Vue.component("fvr-breadcrumb", fvrBreadcrumb);
     Vue.component('fvr-button', fvrButton);
+    Vue.component("fvr-table", fvrTable);
+    Vue.component("fvr-table-column", fvrTableColumn);
   },
 };
 export default Components;
