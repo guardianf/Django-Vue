@@ -30,7 +30,7 @@ Arm List
       list() {
         axios({
           type: "get",
-          url: "/robot/arms/?page=0",
+          url: "/api/v1/robot/arms/?page=0",
         }).then(res => this.table = res.data)
       }
     },

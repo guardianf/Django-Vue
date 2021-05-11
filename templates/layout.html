@@ -48,7 +48,7 @@
   <fvr-main id="right">
     <div id="content">
       {% block breadcrumbs %}
-        <div class="breadcrumbs">{{ request.path }}</div>
+      <fvr-breadcrumb :path="breadcrumbs" v-if="breadcrumbs.length > 1" @click="breadcrumbsClick" style="margin: 20px 0;"></fvr-breadcrumb>
       {% endblock %}
 
       {% block content %}
@@ -120,6 +120,7 @@
       }
     }
   })
+
   // banner
   extend({
     delimiters: ["[[", "]]"],
@@ -158,6 +159,41 @@
         const cookie = new Cookie();
         cookie.setCookie('rememberMe', '')
         navigateTo("{% url 'logout' %}")
+      },
+    },
+  })
+
+  // breadcrumb
+  extend({
+    computed: {
+      breadcrumbs() {
+        return this.reversePath(this.menus, "{{ request.path }}");
+      },
+    },
+    methods: {
+      reversePath(dist, path) {
+        let ret = []
+        for(let i = 0;i < dist.length; i++){
+          if(dist[i].path === path) {
+            ret.push(dist[i]);
+          } else if (dist[i].children && dist[i].children.length > 0){
+            var res = this.reversePath(dist[i].children, path)
+            if(res && res.length > 0) {
+               ret.push(dist[i]);
+              ret = ret.concat(res)
+              if(res.children && res .children.length){
+                  var resOpt = this.reversePath(res, path)
+                  if(resOpt.length > 0) {
+                      ret = ret.concat(resOpt)
+                  }
+              }
+            }
+          }
+        }
+        return ret;
+      },
+      breadcrumbsClick(path) {
+        navigateTo(path);
       },
     },
   })
