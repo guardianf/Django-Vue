@@ -32,7 +32,7 @@
 <fvr-container>
   <fvr-aside style='width: auto;' id='nav'>
     {% block slide_menu %}
-    <fvr-menu @handler='menuClick'>
+    <fvr-menu @handler='menuClick' active="{{ request.path }}">
       <template v-for="(menu, index) in menus">
         <fvr-submenu icon='el-icon-location' v-if="menu.children && menu.children.length > 0" :label="menu.name" :index="menu.path">
           <fvr-menu-item-group :label="menu.name">
@@ -48,7 +48,7 @@
   <fvr-main id="right">
     <div id="content">
       {% block breadcrumbs %}
-        <div class="breadcrumbs">{{breadcrumbs}}</div>
+        <div class="breadcrumbs">{{ request.path }}</div>
       {% endblock %}
 
       {% block content %}
