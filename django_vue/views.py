@@ -1,4 +1,7 @@
-from django.http import HttpResponse;
+from http import HTTPStatus
+import re
+from django.http import HttpResponse
+from django.http.response import JsonResponse;
 from django.shortcuts import render
 from django.views import View
 from django_vue.captcha import CaptchaUtil
@@ -40,3 +43,20 @@ class CaptchaAPIView(View):
     request.session[settings.SESSION_CAPTCHA] = random_codes
     print(random_codes, request.session.get(settings.SESSION_CAPTCHA))
     return HttpResponse(image_buffer.getvalue(), content_type="image/png")
+
+class Customer(View):
+  def get(self, request, *args, **kwargs):
+    ret = {
+      "code": HTTPStatus.OK,
+      "data": [{
+        "name": "Benz",
+        "id": 1
+      }, {
+        "name": "BMW",
+        "id": 2
+      }, {
+        "name": "Audi",
+        "id": 3
+      }, ]
+    }
+    return JsonResponse(ret)
