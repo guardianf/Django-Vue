@@ -8,6 +8,7 @@ from django.urls import path
 
 urlpatterns = [
   path("arms/", views.Arm.as_view(), name="arm"),
+  path("device_states/", views.DeviceStates.as_view(), name="device-states"),
 ]
 
 router = routers.DefaultRouter()

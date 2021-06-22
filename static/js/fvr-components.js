@@ -52,12 +52,12 @@ export const fvrFont = {
  */
 export const fvrBanner = {
   template: `<el-header class='fvr-banner'>
-                  <el-row type='flex' style='width: 100%' align='middle'>
-                          <i class='fvr-logo'></i>
-                          <fvr-font size='xl' class='fvr-fullfill'>Management System</fvr-font>
-                          <slot />
-                  </el-row>
-              </el-header>`,
+              <el-row type='flex' style='width: 100%' align='middle'>
+                <i class='fvr-logo'></i>
+                <fvr-font size='xl' class='fvr-fullfill'>Management System</fvr-font>
+                <slot />
+              </el-row>
+            </el-header>`,
   components: {
     'fvr-font': fvrFont,
   }

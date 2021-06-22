@@ -4,6 +4,7 @@ from django.urls import path
 
 urlpatterns = [
   path("captcha/", views.CaptchaAPIView.as_view(), name="captcha"),
+  path("customer/", views.Customer.as_view(), name="customer"),
 ]
 
 router = routers.DefaultRouter()

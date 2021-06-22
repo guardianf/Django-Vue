@@ -1,3 +1,4 @@
+from django import views
 from django.http import JsonResponse
 from http import HTTPStatus
 from django.views import View;
@@ -34,3 +35,22 @@ class Login(View):
         "msg": "not authorized"
       }
     return JsonResponse(ret)
+
+
+class Info(View):
+  def get(self, request, *args, **kwargs):
+    """
+      roles: ['admin'],
+      introduction: 'I am a super administrator',
+      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      name: 'Super Admin'
+    """
+    return JsonResponse({
+      "code": HTTPStatus.OK,
+      "data": {
+        "roles": ['admin'],
+        "introduction": 'I am a super administrator',
+        "avatar": 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+        "name": 'Super Admin'
+      }
+    })
